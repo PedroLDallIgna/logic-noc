@@ -20,3 +20,13 @@ node** mesh2d::generate_mesh()
 
     return nodes;
 }
+
+node mesh2d::get_node(int row, int column)
+{
+    return this->_matrix[row][column];
+}
+
+void mesh2d::set_node(int row, int column, node n)
+{
+    this->_matrix[row][column] = n;
+}

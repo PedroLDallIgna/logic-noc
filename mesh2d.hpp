@@ -12,6 +12,8 @@ private:
 public:
     mesh2d(int x, int y);
     ~mesh2d();
+    node get_node(int row, int column);
+    void set_node(int row, int column, node n);
 };
 
 
