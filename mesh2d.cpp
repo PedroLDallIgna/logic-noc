@@ -35,7 +35,37 @@ void mesh2d::set_node(int row, int column, node n)
     this->_matrix[row][column] = n;
 }
 
-void mesh2d::route(mesh_pos source, mesh_pos target)
+mesh_pos mesh2d::route(mesh_pos actual, mesh_pos target)
+{
+    mesh_pos next = actual;
+    cout << "[R] ";
+    cout << setw(25) << left << "[ENVIANDO]";
+    cout << "[" << actual.y << actual.x << "] [" << target.y << target.x << "]" << endl;
+    if (actual.x != target.x)
+    {
+        if (actual.x < target.x)
+        {
+            next.x++;
+        }
+        else
+        {
+            next.x--;
+        }
+    } else if (actual.y != target.y) {
+        if (actual.y < target.y)
+        {
+            next.y++;
+        }
+        else
+        {
+            next.y--;
+        }
+    }
+
+    return next;
+}
+
+void mesh2d::send_message(mesh_pos source, mesh_pos target)
 {
     mesh_pos actual = source;
     cout << "[P] ";
@@ -49,34 +79,7 @@ void mesh2d::route(mesh_pos source, mesh_pos target)
             this->_matrix[target.y][target.x].process(source.y, source.x, target.y, target.x);
             break;
         } else {
-            cout << "[R] ";
-            cout << setw(25) << left << "[ENVIANDO]";
-            cout << "[" << actual.y << actual.x << "] [" << target.y << target.x << "]" << endl;
-            if (actual.x != target.x)
-            {
-                if (actual.x < target.x)
-                {
-                    actual.x++;
-                }
-                else
-                {
-                    actual.x--;
-                }
-            } else if (actual.y != target.y) {
-                if (actual.y < target.y)
-                {
-                    actual.y++;
-                }
-                else
-                {
-                    actual.y--;
-                }
-            }
+            actual = this->route(actual, target);
         }
     }
-}
-
-void mesh2d::send_message(mesh_pos source, mesh_pos target)
-{
-    this->route(source, target);
 }

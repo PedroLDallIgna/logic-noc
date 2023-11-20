@@ -22,13 +22,13 @@ void node::set_name(std::string name)
 
 int node::referee(int source_row, int source_column, int target_row, int target_column)
 {
+    cout << "[R] ";
+    cout << setw(25) << left << "[ARBITRAGEM]";
+    cout << "[" << source_row << source_column << "] [" << target_row << target_column << "]" << endl;
     if (source_row == target_row && source_column == target_column)
     {
         return 1;
     }
-    cout << "[R] ";
-    cout << setw(25) << left << "[ARBITRAGEM]";
-    cout << "[" << source_row << source_column << "] [" << target_row << target_column << "]" << endl;
     return 0;
 }
 

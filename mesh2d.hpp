@@ -16,7 +16,7 @@ private:
     int _y;
     node** _matrix;
     node** generate_mesh();
-    void route(mesh_pos source, mesh_pos target);
+    mesh_pos route(mesh_pos source, mesh_pos target);
 public:
     mesh2d(int x, int y);
     ~mesh2d();
