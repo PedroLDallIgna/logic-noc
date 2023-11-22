@@ -30,9 +30,16 @@ node mesh2d::get_node(int row, int column)
     return this->_matrix[row][column];
 }
 
+mesh_pos mesh2d::get_node_pos(std::string nodename)
+{
+    mesh_pos node_pos = this->_nodes_table[nodename];
+    return node_pos;
+}
+
 void mesh2d::set_node(int row, int column, node n)
 {
     this->_matrix[row][column] = n;
+    this->_nodes_table[n.get_name()] = mesh_pos{column, row};
 }
 
 mesh_pos mesh2d::route(mesh_pos actual, mesh_pos target)
@@ -82,4 +89,52 @@ void mesh2d::send_message(mesh_pos source, mesh_pos target)
             actual = this->route(actual, target);
         }
     }
+}
+
+void mesh2d::send_message(std::string source_nodename, std::string target_nodename)
+{
+    mesh_pos source, target;
+    try
+    {
+        try
+        {
+            source = this->get_node_pos(source_nodename);
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+
+        try
+        {
+            target = this->get_node_pos(target_nodename);
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+        
+        mesh_pos actual = source;
+
+        cout << "[P] ";
+        cout << setw(25) << left << "[INICIANDO COMUNICACAO]";
+        cout << "[" << actual.y << actual.x << "] [" << target.y << target.x << "]" << endl;
+
+        while (true)
+        {
+            if (this->_matrix[actual.y][actual.x].referee(actual.y, actual.x, target.y, target.x))
+            {
+                this->_matrix[target.y][target.x].process(source.y, source.x, target.y, target.x);
+                break;
+            } else {
+                actual = this->route(actual, target);
+            }
+        }
+        
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    
 }
